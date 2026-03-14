@@ -1,0 +1,156 @@
+{
+  "welcome": {
+    "name": "Alex Johnson",
+    "role": "Full Stack Developer & UI Enthusiast",
+    "photo_url": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+    "tagline": "I design and build thoughtful digital products with attention to detail, performance, and delightful interactions.",
+    "secondary_text": "Open to collaborating on modern web applications, dashboards, and product experiences that need both strong UI and solid engineering.",
+    "resume_url": "/resume.pdf",
+    "limit": {
+      "name": 50,
+      "role": 100
+    }
+  },
+  "about": {
+    "bio": "I’m a full stack developer who enjoys turning complex problems into simple, beautiful, and intuitive experiences. I work primarily with React, Node.js, and cloud-native architectures, and I care deeply about performance, accessibility, and clean design.",
+    "limit": {
+      "bio": 500
+    }
+  },
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "University of Example",
+      "year": "2020",
+      "limit": {
+        "degree": 100,
+        "institution": 100,
+        "year": 10
+      }
+    },
+    {
+      "degree": "Full Stack Web Development Nanodegree",
+      "institution": "Online Tech Academy",
+      "year": "2022",
+      "limit": {
+        "degree": 100,
+        "institution": 100,
+        "year": 10
+      }
+    }
+  ],
+  "certifications": [
+    {
+      "title": "AWS Certified Solutions Architect – Associate",
+      "issuer": "Amazon Web Services",
+      "year": "2023",
+      "description": "Validated ability to design and implement scalable, secure, and cost-optimized cloud architectures on AWS.",
+      "link": "https://www.credly.com/badges/example-aws-architect",
+      "limit": {
+        "title": 120,
+        "issuer": 120,
+        "description": 300
+      }
+    },
+    {
+      "title": "Meta Front-End Developer Professional Certificate",
+      "issuer": "Coursera",
+      "year": "2022",
+      "description": "Completed an intensive program covering modern front-end fundamentals, including React, UI patterns, accessibility, and responsive design.",
+      "link": "https://www.coursera.org/account/accomplishments/example-meta-fe",
+      "limit": {
+        "title": 120,
+        "issuer": 120,
+        "description": 300
+      }
+    }
+  ],
+  "projects": [
+    {
+      "title": "Modern Portfolio Website",
+      "tech_stack": ["React", "Tailwind CSS", "Framer Motion"],
+      "description": "A responsive, animation-rich portfolio template designed for modern professionals, featuring smooth scroll navigation, project previews, and an easily configurable JSON-based content schema.",
+      "link": "https://github.com/user/modern-portfolio",
+      "image_url": "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+      "limit": {
+        "title": 100,
+        "description": 300
+      }
+    },
+    {
+      "title": "Project Management Dashboard",
+      "tech_stack": ["React", "TypeScript", "Node.js", "PostgreSQL"],
+      "description": "A lightweight project management dashboard with Kanban boards, team activity insights, and real-time updates, built to help small teams stay organized without heavy tooling.",
+      "link": "https://github.com/user/pm-dashboard",
+      "image_url": "https://images.pexels.com/photos/196646/pexels-photo-196646.jpeg",
+      "limit": {
+        "title": 100,
+        "description": 300
+      }
+    },
+    {
+      "title": "E-commerce Product Gallery",
+      "tech_stack": ["Next.js", "Tailwind CSS", "Stripe"],
+      "description": "A minimal e-commerce front-end showcasing product cards, responsive image galleries, and a streamlined checkout flow powered by Stripe, optimized for both desktop and mobile shoppers.",
+      "link": "https://github.com/user/ecommerce-gallery",
+      "image_url": "https://images.pexels.com/photos/3738087/pexels-photo-3738087.jpeg",
+      "limit": {
+        "title": 100,
+        "description": 300
+      }
+    }
+  ],
+  "skills": [
+    {
+      "name": "React",
+      "category": "Frontend",
+      "rating": 5
+    },
+    {
+      "name": "TypeScript",
+      "category": "Frontend",
+      "rating": 4
+    },
+    {
+      "name": "Node.js",
+      "category": "Backend",
+      "rating": 4
+    },
+    {
+      "name": "SQL",
+      "category": "Data",
+      "rating": 4
+    },
+    {
+      "name": "AWS",
+      "category": "Cloud",
+      "rating": 3
+    }
+  ],
+  "contact": {
+    "email": "alex.johnson@example.com",
+    "phone": "+1 (555) 123-4567",
+    "social_links": [
+      {
+        "platform": "LinkedIn",
+        "url": "https://linkedin.com/in/alex-johnson"
+      },
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/user"
+      },
+      {
+        "platform": "Twitter",
+        "url": "https://twitter.com/alex_builds"
+      }
+    ],
+    "instagram": "https://instagram.com/your-handle",
+    "facebook": "https://facebook.com/your-profile",
+    "youtube": "https://youtube.com/@your-channel",
+    "github_profile": "https://github.com/your-username",
+    "leetcode": "https://leetcode.com/your-username",
+    "limit": {
+      "email": 100
+    }
+  }
+}
