@@ -1,8 +1,8 @@
 {
   "welcome": {
-    "name": "Alex Johnson",
+    "name": "Chakradhar",
     "role": "Full Stack Developer & UI Enthusiast",
-    "photo_url": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
+    "photo_url": "/uploads/1773506225030_AI-Girl-Laughing.png",
     "tagline": "I design and build thoughtful digital products with attention to detail, performance, and delightful interactions.",
     "secondary_text": "Open to collaborating on modern web applications, dashboards, and product experiences that need both strong UI and solid engineering.",
     "resume_url": "/resume.pdf",
@@ -68,10 +68,14 @@
   "projects": [
     {
       "title": "Modern Portfolio Website",
-      "tech_stack": ["React", "Tailwind CSS", "Framer Motion"],
+      "tech_stack": [
+        "React",
+        "Tailwind CSS",
+        "Framer Motion"
+      ],
       "description": "A responsive, animation-rich portfolio template designed for modern professionals, featuring smooth scroll navigation, project previews, and an easily configurable JSON-based content schema.",
       "link": "https://github.com/user/modern-portfolio",
-      "image_url": "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+      "image_url": "/uploads/1773506267687_AI-Girl-Angry.png",
       "limit": {
         "title": 100,
         "description": 300
@@ -79,7 +83,12 @@
     },
     {
       "title": "Project Management Dashboard",
-      "tech_stack": ["React", "TypeScript", "Node.js", "PostgreSQL"],
+      "tech_stack": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "PostgreSQL"
+      ],
       "description": "A lightweight project management dashboard with Kanban boards, team activity insights, and real-time updates, built to help small teams stay organized without heavy tooling.",
       "link": "https://github.com/user/pm-dashboard",
       "image_url": "https://images.pexels.com/photos/196646/pexels-photo-196646.jpeg",
@@ -90,7 +99,11 @@
     },
     {
       "title": "E-commerce Product Gallery",
-      "tech_stack": ["Next.js", "Tailwind CSS", "Stripe"],
+      "tech_stack": [
+        "Next.js",
+        "Tailwind CSS",
+        "Stripe"
+      ],
       "description": "A minimal e-commerce front-end showcasing product cards, responsive image galleries, and a streamlined checkout flow powered by Stripe, optimized for both desktop and mobile shoppers.",
       "link": "https://github.com/user/ecommerce-gallery",
       "image_url": "https://images.pexels.com/photos/3738087/pexels-photo-3738087.jpeg",
@@ -130,20 +143,7 @@
   "contact": {
     "email": "alex.johnson@example.com",
     "phone": "+1 (555) 123-4567",
-    "social_links": [
-      {
-        "platform": "LinkedIn",
-        "url": "https://linkedin.com/in/alex-johnson"
-      },
-      {
-        "platform": "GitHub",
-        "url": "https://github.com/user"
-      },
-      {
-        "platform": "Twitter",
-        "url": "https://twitter.com/alex_builds"
-      }
-    ],
+    "social_links": [],
     "instagram": "https://instagram.com/your-handle",
     "facebook": "https://facebook.com/your-profile",
     "youtube": "https://youtube.com/@your-channel",

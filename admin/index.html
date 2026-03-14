@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Portfolio Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #020617;
+        color: #e5e7eb;
+      }
+      .shell {
+        max-width: 1100px;
+        margin: 1.5rem auto 2.5rem;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 60%),
+          #020617;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(30, 64, 175, 0.7);
+      }
+      h1 {
+        font-size: 1.4rem;
+        margin: 0 0 0.25rem;
+      }
+      .subtitle {
+        margin: 0 0 1rem;
+        font-size: 0.9rem;
+        color: #9ca3af;
+      }
+      h2 {
+        font-size: 1rem;
+        margin: 1.5rem 0 0.5rem;
+      }
+      h3 {
+        font-size: 0.9rem;
+        margin: 1rem 0 0.4rem;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin: 0.75rem 0 1rem;
+      }
+      button {
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.9);
+        background: radial-gradient(circle at 0% 0%, #38bdf8, #1d4ed8);
+        color: #020617;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.45rem 1.1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      button.secondary {
+        background: transparent;
+        color: #e5e7eb;
+        border-color: rgba(55, 65, 81, 0.9);
+      }
+      button.icon {
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        line-height: 1;
+      }
+      button:hover {
+        filter: brightness(1.05);
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        gap: 1.25rem;
+      }
+      .card {
+        border-radius: 0.9rem;
+        border: 1px solid rgba(30, 41, 59, 0.9);
+        background: rgba(15, 23, 42, 0.98);
+        padding: 0.9rem 1rem;
+      }
+      .field {
+        margin-bottom: 0.6rem;
+      }
+      .field label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: #9ca3af;
+        margin-bottom: 0.15rem;
+      }
+      .field small {
+        display: block;
+        font-size: 0.7rem;
+        color: #6b7280;
+        margin-top: 0.1rem;
+      }
+      input,
+      textarea {
+        width: 100%;
+        border-radius: 0.6rem;
+        border: 1px solid rgba(31, 41, 55, 1);
+        background: #020617;
+        color: #e5e7eb;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+        outline: none;
+      }
+      input:focus,
+      textarea:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      }
+      textarea {
+        resize: vertical;
+        min-height: 70px;
+      }
+      .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .row-card {
+        border-radius: 0.7rem;
+        border: 1px solid rgba(31, 41, 55, 1);
+        background: rgba(15, 23, 42, 0.98);
+        padding: 0.5rem 0.6rem 0.6rem;
+      }
+      .row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.4rem;
+      }
+      .row-title {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #e5e7eb;
+      }
+      .badge {
+        border-radius: 999px;
+        padding: 0.05rem 0.5rem;
+        border: 1px solid rgba(55, 65, 81, 0.9);
+        font-size: 0.7rem;
+        color: #9ca3af;
+      }
+      .status {
+        font-size: 0.8rem;
+        margin-top: 0.6rem;
+      }
+      .status.ok {
+        color: #4ade80;
+      }
+      .status.error {
+        color: #f97373;
+      }
+      @media (max-width: 800px) {
+        .grid-2 {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <h1>Portfolio Admin Dashboard</h1>
+      <p class="subtitle">
+        Fill the form below to create or update <code>public/data.json</code>. Use the <strong>+</strong> and
+        <strong>−</strong> buttons to manage list items.
+      </p>
+
+      <div class="toolbar">
+        <button id="loadBtn">Load current data.json</button>
+        <button id="emptyBtn" class="secondary">Load empty template</button>
+        <button id="saveBtn">Save changes to data.json</button>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>Hero</h2>
+          <div class="field">
+            <label for="welcome-name">Name</label>
+            <input id="welcome-name" type="text" />
+          </div>
+          <div class="field">
+            <label for="welcome-role">Role</label>
+            <input id="welcome-role" type="text" />
+          </div>
+          <div class="field">
+            <label for="welcome-photo">Photo URL</label>
+            <input id="welcome-photo" type="text" />
+            <small>
+              Or upload:
+              <input id="welcome-photo-file" type="file" accept="image/*" style="margin-top: 0.2rem" />
+              <button id="welcome-photo-upload" class="secondary icon" type="button">Upload</button>
+            </small>
+          </div>
+          <div class="field">
+            <label for="welcome-tagline">Tagline</label>
+            <textarea id="welcome-tagline"></textarea>
+          </div>
+          <div class="field">
+            <label for="welcome-secondary">Secondary text</label>
+            <textarea id="welcome-secondary"></textarea>
+          </div>
+          <div class="field">
+            <label for="welcome-resume">Résumé URL</label>
+            <input id="welcome-resume" type="text" placeholder="/resume.pdf or https://..." />
+          </div>
+
+          <h2>About</h2>
+          <div class="field">
+            <label for="about-bio">Bio</label>
+            <textarea id="about-bio"></textarea>
+          </div>
+
+          <h2>Contact</h2>
+          <div class="field">
+            <label for="contact-email">Email</label>
+            <input id="contact-email" type="email" />
+          </div>
+          <div class="field">
+            <label for="contact-phone">Phone</label>
+            <input id="contact-phone" type="text" />
+          </div>
+          <div class="field">
+            <label for="contact-instagram">Instagram URL</label>
+            <input id="contact-instagram" type="text" />
+          </div>
+          <div class="field">
+            <label for="contact-facebook">Facebook URL</label>
+            <input id="contact-facebook" type="text" />
+          </div>
+          <div class="field">
+            <label for="contact-youtube">YouTube URL</label>
+            <input id="contact-youtube" type="text" />
+          </div>
+          <div class="field">
+            <label for="contact-github">GitHub URL</label>
+            <input id="contact-github" type="text" />
+          </div>
+          <div class="field">
+            <label for="contact-leetcode">LeetCode URL</label>
+            <input id="contact-leetcode" type="text" />
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Skills</h2>
+          <div class="rows" id="skills-rows"></div>
+          <button id="add-skill" class="secondary icon">+ Skill</button>
+
+          <h2>Education</h2>
+          <div class="rows" id="education-rows"></div>
+          <button id="add-education" class="secondary icon">+ Education</button>
+
+          <h2>Certifications</h2>
+          <div class="rows" id="cert-rows"></div>
+          <button id="add-cert" class="secondary icon">+ Certification</button>
+
+          <h2>Projects</h2>
+          <div class="rows" id="project-rows"></div>
+          <button id="add-project" class="secondary icon">+ Project</button>
+        </div>
+      </div>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <script>
+      const API_URL = window.location.origin + '/api/data';
+      const UPLOAD_URL = window.location.origin + '/api/upload';
+
+      const statusEl = document.getElementById('status');
+      function setStatus(message, type) {
+        statusEl.textContent = message;
+        statusEl.className = 'status ' + (type || '');
+      }
+
+      // Helpers to create elements
+      function el(tag, attrs = {}, children = []) {
+        const node = document.createElement(tag);
+        Object.entries(attrs).forEach(([k, v]) => {
+          if (k === 'class') node.className = v;
+          else if (k === 'text') node.textContent = v;
+          else node.setAttribute(k, v);
+        });
+        children.forEach((c) => node.appendChild(c));
+        return node;
+      }
+
+      // Containers
+      const skillsContainer = document.getElementById('skills-rows');
+      const eduContainer = document.getElementById('education-rows');
+      const certContainer = document.getElementById('cert-rows');
+      const projContainer = document.getElementById('project-rows');
+
+      // Field getters
+      const $ = (id) => document.getElementById(id);
+
+      async function uploadFile(file) {
+        const form = new FormData();
+        form.append('file', file);
+        const res = await fetch(UPLOAD_URL, {
+          method: 'POST',
+          body: form,
+        });
+        if (!res.ok) {
+          throw new Error('HTTP ' + res.status);
+        }
+        const json = await res.json();
+        if (!json.url) {
+          throw new Error('No url returned from server');
+        }
+        return json.url;
+      }
+
+      function buildSkillRow(skill = { name: '', category: '', rating: 0 }) {
+        const row = el('div', { class: 'row-card' });
+        const header = el('div', { class: 'row-header' });
+        const title = el('span', { class: 'row-title', text: 'Skill' });
+        const removeBtn = el('button', { class: 'secondary icon', type: 'button' }, [
+          document.createTextNode('−'),
+        ]);
+        removeBtn.addEventListener('click', () => row.remove());
+        header.appendChild(title);
+        header.appendChild(removeBtn);
+
+        const nameField = el('div', { class: 'field' });
+        nameField.appendChild(el('label', { text: 'Name' }));
+        const nameInput = el('input', { type: 'text' });
+        nameInput.value = skill.name || '';
+        nameField.appendChild(nameInput);
+
+        const catField = el('div', { class: 'field' });
+        catField.appendChild(el('label', { text: 'Category' }));
+        const catInput = el('input', { type: 'text' });
+        catInput.value = skill.category || '';
+        catField.appendChild(catInput);
+
+        const ratingField = el('div', { class: 'field' });
+        ratingField.appendChild(el('label', { text: 'Rating (0-5)' }));
+        const ratingInput = el('input', { type: 'number', min: '0', max: '5' });
+        ratingInput.value = skill.rating ?? 0;
+        ratingField.appendChild(ratingInput);
+
+        row.appendChild(header);
+        row.appendChild(nameField);
+        row.appendChild(catField);
+        row.appendChild(ratingField);
+
+        row._getValue = () => ({
+          name: nameInput.value.trim(),
+          category: catInput.value.trim(),
+          rating: Number(ratingInput.value || 0),
+        });
+
+        return row;
+      }
+
+      function buildEducationRow(edu = { degree: '', institution: '', year: '' }) {
+        const row = el('div', { class: 'row-card' });
+        const header = el('div', { class: 'row-header' });
+        header.appendChild(el('span', { class: 'row-title', text: 'Education' }));
+        const removeBtn = el('button', { class: 'secondary icon', type: 'button' }, [
+          document.createTextNode('−'),
+        ]);
+        removeBtn.addEventListener('click', () => row.remove());
+        header.appendChild(removeBtn);
+
+        const degField = el('div', { class: 'field' });
+        degField.appendChild(el('label', { text: 'Degree' }));
+        const degInput = el('input', { type: 'text' });
+        degInput.value = edu.degree || '';
+        degField.appendChild(degInput);
+
+        const instField = el('div', { class: 'field' });
+        instField.appendChild(el('label', { text: 'Institution' }));
+        const instInput = el('input', { type: 'text' });
+        instInput.value = edu.institution || '';
+        instField.appendChild(instInput);
+
+        const yearField = el('div', { class: 'field' });
+        yearField.appendChild(el('label', { text: 'Year' }));
+        const yearInput = el('input', { type: 'text' });
+        yearInput.value = edu.year || '';
+        yearField.appendChild(yearInput);
+
+        row.appendChild(header);
+        row.appendChild(degField);
+        row.appendChild(instField);
+        row.appendChild(yearField);
+
+        row._getValue = () => ({
+          degree: degInput.value.trim(),
+          institution: instInput.value.trim(),
+          year: yearInput.value.trim(),
+          limit: edu.limit || { degree: 100, institution: 100, year: 10 },
+        });
+
+        return row;
+      }
+
+      function buildCertRow(cert = { title: '', issuer: '', year: '', description: '', link: '' }) {
+        const row = el('div', { class: 'row-card' });
+        const header = el('div', { class: 'row-header' });
+        header.appendChild(el('span', { class: 'row-title', text: 'Certification' }));
+        const removeBtn = el('button', { class: 'secondary icon', type: 'button' }, [
+          document.createTextNode('−'),
+        ]);
+        removeBtn.addEventListener('click', () => row.remove());
+        header.appendChild(removeBtn);
+
+        const titleField = el('div', { class: 'field' });
+        titleField.appendChild(el('label', { text: 'Title' }));
+        const titleInput = el('input', { type: 'text' });
+        titleInput.value = cert.title || '';
+        titleField.appendChild(titleInput);
+
+        const issuerField = el('div', { class: 'field' });
+        issuerField.appendChild(el('label', { text: 'Issuer' }));
+        const issuerInput = el('input', { type: 'text' });
+        issuerInput.value = cert.issuer || '';
+        issuerField.appendChild(issuerInput);
+
+        const yearField = el('div', { class: 'field' });
+        yearField.appendChild(el('label', { text: 'Year' }));
+        const yearInput = el('input', { type: 'text' });
+        yearInput.value = cert.year || '';
+        yearField.appendChild(yearInput);
+
+        const descField = el('div', { class: 'field' });
+        descField.appendChild(el('label', { text: 'Description' }));
+        const descInput = el('textarea');
+        descInput.value = cert.description || '';
+        descField.appendChild(descInput);
+
+        const linkField = el('div', { class: 'field' });
+        linkField.appendChild(el('label', { text: 'Credential URL (optional)' }));
+        const linkInput = el('input', { type: 'text' });
+        linkInput.value = cert.link || '';
+        linkField.appendChild(linkInput);
+
+        row.appendChild(header);
+        row.appendChild(titleField);
+        row.appendChild(issuerField);
+        row.appendChild(yearField);
+        row.appendChild(descField);
+        row.appendChild(linkField);
+
+        row._getValue = () => ({
+          title: titleInput.value.trim(),
+          issuer: issuerInput.value.trim(),
+          year: yearInput.value.trim(),
+          description: descInput.value.trim(),
+          link: linkInput.value.trim(),
+          limit: cert.limit || { title: 120, issuer: 120, description: 300 },
+        });
+
+        return row;
+      }
+
+      function buildProjectRow(project = { title: '', tech_stack: [], description: '', link: '', image_url: '' }) {
+        const row = el('div', { class: 'row-card' });
+        const header = el('div', { class: 'row-header' });
+        header.appendChild(el('span', { class: 'row-title', text: 'Project' }));
+        const removeBtn = el('button', { class: 'secondary icon', type: 'button' }, [
+          document.createTextNode('−'),
+        ]);
+        removeBtn.addEventListener('click', () => row.remove());
+        header.appendChild(removeBtn);
+
+        const titleField = el('div', { class: 'field' });
+        titleField.appendChild(el('label', { text: 'Title' }));
+        const titleInput = el('input', { type: 'text' });
+        titleInput.value = project.title || '';
+        titleField.appendChild(titleInput);
+
+        const techField = el('div', { class: 'field' });
+        techField.appendChild(el('label', { text: 'Tech stack (comma separated)' }));
+        const techInput = el('input', { type: 'text' });
+        techInput.value = (project.tech_stack || []).join(', ');
+        techField.appendChild(techInput);
+
+        const descField = el('div', { class: 'field' });
+        descField.appendChild(el('label', { text: 'Description' }));
+        const descInput = el('textarea');
+        descInput.value = project.description || '';
+        descField.appendChild(descInput);
+
+        const linkField = el('div', { class: 'field' });
+        linkField.appendChild(el('label', { text: 'Project URL (optional)' }));
+        const linkInput = el('input', { type: 'text' });
+        linkInput.value = project.link || '';
+        linkField.appendChild(linkInput);
+
+        const imgField = el('div', { class: 'field' });
+        imgField.appendChild(el('label', { text: 'Image URL (optional)' }));
+        const imgInput = el('input', { type: 'text' });
+        imgInput.value = project.image_url || '';
+        imgField.appendChild(imgInput);
+        const imgControls = el('small', {}, []);
+        const imgFile = el('input', {
+          type: 'file',
+          accept: 'image/*',
+          style: 'margin-top:0.2rem',
+        });
+        const imgBtn = el('button', { class: 'secondary icon', type: 'button' }, [
+          document.createTextNode('Upload'),
+        ]);
+        imgControls.appendChild(imgFile);
+        imgControls.appendChild(imgBtn);
+        imgField.appendChild(imgControls);
+
+        row.appendChild(header);
+        row.appendChild(titleField);
+        row.appendChild(techField);
+        row.appendChild(descField);
+        row.appendChild(linkField);
+        row.appendChild(imgField);
+
+        row._getValue = () => {
+          const tech = techInput.value
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean);
+          return {
+            title: titleInput.value.trim(),
+            tech_stack: tech,
+            description: descInput.value.trim(),
+            link: linkInput.value.trim(),
+            image_url: imgInput.value.trim(),
+            limit: project.limit || { title: 100, description: 300 },
+          };
+        };
+
+        // bind upload handler for this project row
+        imgBtn.addEventListener('click', async () => {
+          if (!imgFile.files || !imgFile.files[0]) {
+            setStatus('Please choose an image file first.', 'error');
+            return;
+          }
+          try {
+            setStatus('Uploading project image ...');
+            const url = await uploadFile(imgFile.files[0]);
+            imgInput.value = url;
+            setStatus('Project image uploaded.', 'ok');
+          } catch (err) {
+            console.error(err);
+            setStatus('Image upload failed: ' + err.message, 'error');
+          }
+        });
+
+        return row;
+      }
+
+      function renderFromData(data) {
+        // Hero / about / contact
+        $('welcome-name').value = data.welcome?.name || '';
+        $('welcome-role').value = data.welcome?.role || '';
+        $('welcome-photo').value = data.welcome?.photo_url || '';
+        $('welcome-tagline').value = data.welcome?.tagline || '';
+        $('welcome-secondary').value = data.welcome?.secondary_text || '';
+        $('welcome-resume').value = data.welcome?.resume_url || '';
+
+        $('about-bio').value = data.about?.bio || '';
+
+        $('contact-email').value = data.contact?.email || '';
+        $('contact-phone').value = data.contact?.phone || '';
+        $('contact-instagram').value = data.contact?.instagram || '';
+        $('contact-facebook').value = data.contact?.facebook || '';
+        $('contact-youtube').value = data.contact?.youtube || '';
+        $('contact-github').value = data.contact?.github_profile || '';
+        $('contact-leetcode').value = data.contact?.leetcode || '';
+
+        // Lists
+        skillsContainer.innerHTML = '';
+        (data.skills || []).forEach((s) => skillsContainer.appendChild(buildSkillRow(s)));
+
+        eduContainer.innerHTML = '';
+        (data.education || []).forEach((e) => eduContainer.appendChild(buildEducationRow(e)));
+
+        certContainer.innerHTML = '';
+        (data.certifications || []).forEach((c) => certContainer.appendChild(buildCertRow(c)));
+
+        projContainer.innerHTML = '';
+        (data.projects || []).forEach((p) => projContainer.appendChild(buildProjectRow(p)));
+      }
+
+      function collectData() {
+        const skills = Array.from(skillsContainer.children).map((row) => row._getValue());
+        const education = Array.from(eduContainer.children).map((row) => row._getValue());
+        const certifications = Array.from(certContainer.children).map((row) => row._getValue());
+        const projects = Array.from(projContainer.children).map((row) => row._getValue());
+
+        return {
+          welcome: {
+            name: $('welcome-name').value.trim(),
+            role: $('welcome-role').value.trim(),
+            photo_url: $('welcome-photo').value.trim(),
+            tagline: $('welcome-tagline').value.trim(),
+            secondary_text: $('welcome-secondary').value.trim(),
+            resume_url: $('welcome-resume').value.trim(),
+            limit: { name: 50, role: 100 },
+          },
+          about: {
+            bio: $('about-bio').value.trim(),
+            limit: { bio: 500 },
+          },
+          education,
+          certifications,
+          projects,
+          skills,
+          contact: {
+            email: $('contact-email').value.trim(),
+            phone: $('contact-phone').value.trim(),
+            social_links: [], // keep schema simple here
+            instagram: $('contact-instagram').value.trim(),
+            facebook: $('contact-facebook').value.trim(),
+            youtube: $('contact-youtube').value.trim(),
+            github_profile: $('contact-github').value.trim(),
+            leetcode: $('contact-leetcode').value.trim(),
+            limit: { email: 100 },
+          },
+        };
+      }
+
+      async function loadCurrent() {
+        try {
+          setStatus('Loading data.json ...');
+          const res = await fetch(API_URL);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const json = await res.json();
+          renderFromData(json);
+          setStatus('Loaded current data.json', 'ok');
+        } catch (err) {
+          console.error(err);
+          setStatus('Failed to load data.json: ' + err.message, 'error');
+        }
+      }
+
+      async function loadEmptyTemplate() {
+        try {
+          setStatus('Loading empty template ...');
+          const res = await fetch(API_URL);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const json = await res.json();
+          const empty = {
+            welcome: {
+              ...json.welcome,
+              name: '',
+              role: '',
+              photo_url: '',
+              tagline: '',
+              secondary_text: '',
+              resume_url: '',
+            },
+            about: {
+              ...json.about,
+              bio: '',
+            },
+            education: [],
+            certifications: [],
+            projects: [],
+            skills: [],
+            contact: {
+              ...json.contact,
+              email: '',
+              phone: '',
+              social_links: [],
+              instagram: '',
+              facebook: '',
+              youtube: '',
+              github_profile: '',
+              leetcode: '',
+            },
+          };
+          renderFromData(empty);
+          setStatus('Empty template loaded into form (not yet saved).', 'ok');
+        } catch (err) {
+          console.error(err);
+          setStatus('Failed to build empty template: ' + err.message, 'error');
+        }
+      }
+
+      async function saveChanges() {
+        const data = collectData();
+        try {
+          setStatus('Saving to data.json ...');
+          const res = await fetch(API_URL, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          setStatus('Saved successfully. data.json has been updated.', 'ok');
+        } catch (err) {
+          console.error(err);
+          setStatus('Failed to save: ' + err.message, 'error');
+        }
+      }
+
+      // Button wiring
+      document.getElementById('loadBtn').addEventListener('click', loadCurrent);
+      document.getElementById('emptyBtn').addEventListener('click', loadEmptyTemplate);
+      document.getElementById('saveBtn').addEventListener('click', saveChanges);
+
+      // Hero photo upload
+      const heroFileInput = document.getElementById('welcome-photo-file');
+      const heroUploadBtn = document.getElementById('welcome-photo-upload');
+      heroUploadBtn.addEventListener('click', async () => {
+        if (!heroFileInput.files || !heroFileInput.files[0]) {
+          setStatus('Please choose a hero photo first.', 'error');
+          return;
+        }
+        try {
+          setStatus('Uploading hero photo ...');
+          const url = await uploadFile(heroFileInput.files[0]);
+          $('welcome-photo').value = url;
+          setStatus('Hero photo uploaded.', 'ok');
+        } catch (err) {
+          console.error(err);
+          setStatus('Hero photo upload failed: ' + err.message, 'error');
+        }
+      });
+
+      document.getElementById('add-skill').addEventListener('click', () => {
+        skillsContainer.appendChild(buildSkillRow());
+      });
+      document.getElementById('add-education').addEventListener('click', () => {
+        eduContainer.appendChild(buildEducationRow());
+      });
+      document.getElementById('add-cert').addEventListener('click', () => {
+        certContainer.appendChild(buildCertRow());
+      });
+      document.getElementById('add-project').addEventListener('click', () => {
+        projContainer.appendChild(buildProjectRow());
+      });
+
+      // Auto-load on first open
+      loadCurrent();
+    </script>
+  </body>
+  </html>
+

@@ -13,8 +13,14 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
-echo Starting development server on http://localhost:3000 ...
+echo Starting portfolio dev server on http://localhost:3000 ...
 echo (Press CTRL+C in this window to stop)
 echo.
 npm start
+
+echo.
+echo To run the admin dashboard in a separate window:
+echo   cd "%~dp0"
+echo   npm run admin   ^&^& open http://localhost:4000/admin
+echo.
 

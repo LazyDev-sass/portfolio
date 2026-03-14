@@ -47,7 +47,7 @@ npm start
 
 Then open `http://localhost:3000` in your browser.
 
-### One‑click scripts
+### One‑click scripts (main portfolio)
 
 #### Windows
 
@@ -65,6 +65,60 @@ cd /path/to/PORTFOLIO/portfolio
 chmod +x run-portfolio.sh   # first time only
 ./run-portfolio.sh
 ```
+
+This script installs dependencies and runs `npm start`.
+
+---
+
+## Admin Panel (JSON editor for `data.json`)
+
+The admin panel runs as a **separate Node.js process** and lets you create or update `public/data.json` (and upload images into `public/uploads/`) with a simple UI.
+
+### Start the admin server
+
+```bash
+cd c:\PORTFOLIO\portfolio
+npm run admin
+```
+
+You should see:
+
+```text
+Admin server listening on http://localhost:4000
+Admin UI: http://localhost:4000/admin
+```
+
+### Open the admin UI
+
+- Visit `http://localhost:4000/admin` in your browser.
+
+The admin page provides:
+
+- **Load current data.json**: fetches and shows whatever is currently in `public/data.json`.  
+  - If the file is empty / missing / invalid, the server returns a **safe empty schema**, so you can start from scratch.
+- **Load empty template**: loads a blank template into the editor:
+  - Keeps the JSON structure and `limit` values.
+  - Clears all text fields and arrays (welcome, about, education, certifications, projects, skills, contact).
+  - Does **not** write to disk until you save.
+- **Save changes to data.json**:
+  - Collects the form values (hero, about, skills, education, certifications, projects, contact).
+  - Sends them via `PUT /api/data` and overwrites `public/data.json`.
+
+### Image uploads
+
+- The admin UI supports uploading images from your device for:
+  - **Hero photo** (`welcome.photo_url`)
+  - **Project images** (`projects[].image_url`)
+- Under each image field:
+  - Choose a file → click **Upload**.
+  - The file is sent to `POST /api/upload` and stored in `public/uploads/`.
+  - The returned `/uploads/…` URL is automatically written into the corresponding text box.
+- After clicking **Save changes to data.json**, those `/uploads/…` URLs are persisted into `public/data.json`, and the main React app uses them directly.
+
+The admin server and the React dev server are independent:
+
+- Main app: `npm start` → `http://localhost:3000`
+- Admin app: `npm run admin` → `http://localhost:4000/admin`
 
 ---
 
