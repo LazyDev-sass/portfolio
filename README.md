@@ -1,5 +1,47 @@
 # Portfolio Template (JSON‑Driven, React + Tailwind)
 
+
+## Netlify deployment (frontend + protected admin)
+
+This repository is configured for Netlify Functions. The React app reads `/api/data`; admin tools are published at `/admin/`; JSON and uploaded images are persisted using Netlify Blobs rather than writing to the deployed `public/` directory.
+
+### Netlify build settings
+- Build command: `npm run build`
+- Publish directory: `build`
+- Base directory: empty (if `package.json` is at repository root)
+- Functions directory: `netlify/functions` (set in `netlify.toml`)
+
+### Required environment variables
+Set these in Netlify Project configuration → Environment variables, for the Functions runtime:
+- `ADMIN_USERNAME`: the admin login username.
+- `ADMIN_PASSWORD_HASH`: bcrypt hash of the admin password (never the plain password).
+- `SESSION_SECRET`: a random secret with at least 32 random bytes.
+
+Generate a bcrypt hash locally after installing the dependencies:
+```bash
+node -e "const bcrypt=require('bcryptjs'); bcrypt.hash(process.argv[1], 12).then(console.log)" "YOUR-STRONG-PASSWORD"
+```
+Copy the resulting hash to `ADMIN_PASSWORD_HASH`; do not commit the password or hash to source control. Generate a random session secret with:
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+```
+After setting variables, trigger a new deploy.
+
+### Deploy steps
+1. Commit and push these changes to the connected GitHub repository.
+2. Confirm the Netlify build settings above and deploy the `main` branch.
+3. Open `https://YOUR-SITE.netlify.app/admin/` and sign in with the configured credentials.
+4. Save a small test change and upload a test image.
+5. Refresh the public portfolio and confirm changes remain visible after a new deployment.
+
+### Notes
+- The `public/data.json` is the initial fallback content. Saved edits live in Netlify Blobs and do not modify the GitHub file.
+- Existing `/uploads/...` assets remain static assets; newly uploaded images use `/api/uploads/...`.
+- The admin page's HTML is public, but the data and upload write operations require a server-validated session.
+- Do not use the admin on Deploy Previews unless you deliberately want to write to the same Blobs store as production.
+- Netlify Blobs uses the site's persistent store. Make backups of portfolio JSON and important images.
+- This implementation requires Netlify Functions and Blobs to be enabled for the site.
+
 This is a modern, animated developer portfolio built with **React (CRA)**, **Tailwind CSS**, and **Framer Motion**.  
 All content is driven from a single JSON file (`public/data.json`), so you can customize the site without touching React code.
 

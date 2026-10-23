@@ -1,8 +1,8 @@
 {
   "welcome": {
-    "name": "Chakradhar",
-    "role": "Full Stack Developer & UI Enthusiast",
-    "photo_url": "/uploads/1773506225030_AI-Girl-Laughing.png",
+    "name": "Vaishnavi",
+    "role": "Data Engineer",
+    "photo_url": "/uploads/1773577793660_Embaress-2.png",
     "tagline": "I design and build thoughtful digital products with attention to detail, performance, and delightful interactions.",
     "secondary_text": "Open to collaborating on modern web applications, dashboards, and product experiences that need both strong UI and solid engineering.",
     "resume_url": "/resume.pdf",
@@ -141,14 +141,14 @@
     }
   ],
   "contact": {
-    "email": "alex.johnson@example.com",
+    "email": "hellolazydev@gmail.com",
     "phone": "+1 (555) 123-4567",
     "social_links": [],
-    "instagram": "https://instagram.com/your-handle",
-    "facebook": "https://facebook.com/your-profile",
-    "youtube": "https://youtube.com/@your-channel",
-    "github_profile": "https://github.com/your-username",
-    "leetcode": "https://leetcode.com/your-username",
+    "instagram": "https://www.instagram.com/codesass/",
+    "facebook": "",
+    "youtube": "",
+    "github_profile": "https://github.com/LazyDev-sass",
+    "leetcode": "",
     "limit": {
       "email": 100
     }
