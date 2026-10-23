@@ -49,15 +49,33 @@ function cookieHeader(value, maxAge = SESSION_SECONDS) {
   return `${COOKIE_NAME}=${encodeURIComponent(value)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${maxAge}`;
 }
 
-function sameOrigin(event) {
-  const origin = event.headers?.origin || event.headers?.Origin;
-  const host = event.headers?.host || event.headers?.Host;
-  if (!origin || !host) return true;
+function hostOf(value) {
   try {
-    return new URL(origin).host.toLowerCase() === String(host).toLowerCase();
+    return new URL(value).host.toLowerCase();
   } catch {
-    return false;
+    return '';
   }
+}
+
+// Behind Netlify's proxy the Host header can differ from the public domain the
+// browser used, so compare the Origin against every host this request could be
+// legitimately served from rather than Host alone.
+function sameOrigin(event) {
+  const h = event.headers || {};
+  const origin = h.origin || h.Origin;
+  if (!origin) return true;
+  // Browsers set this header themselves and pages cannot forge it.
+  const fetchSite = h['sec-fetch-site'] || h['Sec-Fetch-Site'];
+  if (fetchSite === 'same-origin') return true;
+
+  const originHost = hostOf(origin);
+  if (!originHost) return false;
+  const allowed = new Set([
+    h.host, h.Host, h['x-forwarded-host'], h['X-Forwarded-Host'],
+  ].filter(Boolean).flatMap((v) => String(v).split(',')).map((v) => v.trim().toLowerCase()));
+  [event.rawUrl, process.env.URL, process.env.DEPLOY_URL, process.env.DEPLOY_PRIME_URL]
+    .filter(Boolean).forEach((v) => { const host = hostOf(v); if (host) allowed.add(host); });
+  return allowed.has(originHost);
 }
 
 async function verifyPassword(password) {
