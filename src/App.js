@@ -10,14 +10,67 @@ import Skills from './components/Skills';
 function App() {
   const [data, setData] = useState(null);
 
-  useEffect(() => {
-    fetch('/api/data')
-      .then(response => response.json())
-      .then(setData)
-      .catch(console.error);
-  }, []);
+  
+useEffect(() => {
+  let cancelled = false;
 
-  if (!data) return <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center">Loading...</div>;
+  async function loadPortfolio() {
+    try {
+      let response = await fetch('/api/data');
+
+      // Local React development doesn't run Netlify Functions.
+      if (!response.ok) {
+        throw new Error('Portfolio API unavailable');
+      }
+
+      let portfolioData = await response.json();
+
+      if (!cancelled) setData(portfolioData);
+    } catch (error) {
+      console.warn('Using local portfolio data:', error.message);
+
+      try {
+        const response = await fetch('/data.json');
+
+        if (!response.ok) {
+          throw new Error('Could not load public/data.json');
+        }
+
+        const portfolioData = await response.json();
+
+        if (!cancelled) setData(portfolioData);
+      } catch (fallbackError) {
+        console.error('Portfolio loading failed:', fallbackError);
+
+        if (!cancelled) {
+          setData({ error: true });
+        }
+      }
+    }
+  }
+
+  loadPortfolio();
+
+  return () => {
+    cancelled = true;
+  };
+}, []);
+
+  if (!data) {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      Loading portfolio...
+    </div>
+  );
+}
+
+if (data.error) {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      Unable to load portfolio. Please check public/data.json.
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
