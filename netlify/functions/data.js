@@ -1,16 +1,20 @@
 const fs = require('fs');
 const path = require('path');
-const { getStore } = require('@netlify/blobs');
+const { connectLambda, getStore } = require('@netlify/blobs');
 const { verifySession, sameOrigin } = require('./_lib/auth.cjs');
 
-const store = () => getStore('portfolio-content');
+const store = (event) => {
+  // Lambda-compatible functions receive the Blobs context on the event.
+  if (event.blobs) connectLambda(event);
+  return getStore('portfolio-content');
+};
 const fallbackPath = path.join(__dirname, '..', '..', 'public', 'data.json');
 
 exports.handler = async (event) => {
   const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
   if (event.httpMethod === 'GET') {
     try {
-      const saved = await store().get('data.json', { type: 'json' });
+      const saved = await store(event).get('data.json', { type: 'json' });
       if (saved && typeof saved === 'object') {
         return { statusCode: 200, headers, body: JSON.stringify(saved) };
       }
@@ -47,7 +51,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    await store().setJSON('data.json', data);
+    await store(event).setJSON('data.json', data);
     return { statusCode: 200, headers, body: JSON.stringify({ ok: true }) };
   } catch (err) {
     console.error('Portfolio write failed:', err);

@@ -722,7 +722,10 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
           });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
+          if (!res.ok) {
+            const result = await res.json().catch(() => ({}));
+            throw new Error(result.error || 'HTTP ' + res.status);
+          }
           setStatus('Saved successfully. data.json has been updated.', 'ok');
         } catch (err) {
           console.error(err);
