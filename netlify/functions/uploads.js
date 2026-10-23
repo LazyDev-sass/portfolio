@@ -1,9 +1,12 @@
 const Busboy = require('busboy');
-const { getStore } = require('@netlify/blobs');
+const { connectLambda, getStore } = require('@netlify/blobs');
 const crypto = require('crypto');
 const { verifySession, sameOrigin } = require('./_lib/auth.cjs');
 
-const store = () => getStore('portfolio-uploads');
+const store = (event) => {
+  if (event.blobs) connectLambda(event);
+  return getStore('portfolio-uploads');
+};
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 
@@ -40,7 +43,7 @@ function parseUpload(event) {
 exports.handler = async (event) => {
   const method = event.httpMethod;
   const headers = { 'Cache-Control': 'public, max-age=3600' };
-  const storeInstance = store();
+  const storeInstance = store(event);
 
   if (method === 'POST') {
     if (!sameOrigin(event)) return { statusCode: 403, headers, body: JSON.stringify({ error: 'Cross-origin request rejected' }) };
