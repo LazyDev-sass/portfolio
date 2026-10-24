@@ -37,7 +37,7 @@ function Hero({ welcome }) {
             <motion.img
               src={photo_url}
               alt={name || 'Profile photo'}
-              className="relative z-10 h-32 w-56 rounded-full object-cover md:h-[10rem] md:w-[14rem]"
+              className="relative z-10 h-32 w-32 rounded-full object-cover md:h-[10rem] md:w-[14rem]"
               loading="lazy"
               whileHover={{ scale: 1.03 }}
               transition={{ type: 'spring', stiffness: 260, damping: 20 }}
